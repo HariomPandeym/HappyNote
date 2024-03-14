@@ -53,14 +53,14 @@ const CreateNote = asyncHandler(async (req, res) => {
 // //@access          Private
 const DeleteNote = asyncHandler(async (req, res) => {
   const note = await Note.findById(req.params.id);
-
+  console.log(note);
   if (note.user.toString() !== req.user._id.toString()) {
     res.status(401);
     throw new Error("You can't perform this action");
   }
 
   if (note) {
-    await note.remove();
+    await Note.deleteOne({ _id: req.params.id });
     res.json({ message: "Note Removed" });
   } else {
     res.status(404);
